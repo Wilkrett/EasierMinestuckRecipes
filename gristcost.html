@@ -14,8 +14,22 @@
 
       <div class="form-group">
         <label for="ingredient-tag">Ingredient Tag:</label>
-        <input type="text" class="form-control" id="ingredient-tag" name="ingredient-tag" placeholder='{"item": "supplementaries:bomb_blue"}' required>
-        <small class="form-text">Example: {"item": "supplementaries:bomb_blue"}</small>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-3">
+              <select class="form-control" id="selectOperator">
+                <option value="block">block</option>
+                <option value="fluid">fluid</option>
+                <option value="item">item</option>
+              </select>
+            </div>
+
+          <div class="col-md-9">
+            <input type="text" class="form-control" id="ingredient-tag" name="ingredient-tag" placeholder='supplementaries:bomb_blue' required>
+            <small class="form-text">Example: supplementaries:bomb_blue</small>
+          </div>  
+        </div>
+        </div>
       </div>
 
       <div id="gristCostSection">
@@ -109,7 +123,13 @@
       document.getElementById('recipeForm').addEventListener('submit', function(event) {
           event.preventDefault();
 
-          const ingredientTag = JSON.parse(document.getElementById('ingredient-tag').value);
+          const type = document.getElementById('selectOperator').value;
+          const ingredientTag = document.getElementById('ingredient-tag').value;
+
+          
+          const ingredient = {
+             [type]: ingredientTag
+          };
 
           const gristCosts = {};
 
@@ -129,7 +149,7 @@
           const recipeJSON = {
           "type": "minestuck:grist_cost",
           "grist_cost": gristCosts,
-          "ingredient": ingredientTag
+          "ingredient": ingredient
           };
 
           const jsonDisplay = document.getElementById('jsonDisplay');
