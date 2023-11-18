@@ -121,48 +121,46 @@
       }
       
       document.getElementById('recipeForm').addEventListener('submit', function(event) {
-          event.preventDefault();
+        event.preventDefault();
 
-          const type = document.getElementById('selectOperator').value;
-          const ingredientTag = document.getElementById('ingredient-tag').value;
+        const type = document.getElementById('selectOperator').value;
+        const ingredientTag = document.getElementById('ingredient-tag').value;
 
-          
-          const ingredient = {
-             [type]: ingredientTag
-          };
+        
+        const ingredient = {
+            [type]: ingredientTag
+        };
 
-          const gristCosts = {};
+        const gristCosts = {};
 
-          $('.grist-card').each(function(index) {
-          const gristCount = index + 1;
-          const gristCostInput = parseInt($(this).find(`#grist-cost-${gristCount}`).val());
-          const selectedImage = $(this).find(`#image-${gristCount}`).val();
+        $('.grist-card').each(function(index) {
+        const gristCount = index + 1;
+        const gristCostInput = parseInt($(this).find(`#grist-cost-${gristCount}`).val());
+        const selectedImage = $(this).find(`#image-${gristCount}`).val();
 
-          console.log("Selected Image:", selectedImage);
+        console.log("Selected Image:", selectedImage);
 
-          if (selectedImage) {
-              const imageName = selectedImage.split('.')[0];
-              gristCosts[`minestuck:${imageName}`] = gristCostInput;
-          }
-          });
+        if (selectedImage) {
+            const imageName = selectedImage.split('.')[0];
+            gristCosts[`minestuck:${imageName}`] = gristCostInput;
+        }
+        });
 
-          const recipeJSON = {
-          "type": "minestuck:grist_cost",
-          "grist_cost": gristCosts,
-          "ingredient": ingredient
-          };
+        const recipeJSON = {
+        "type": "minestuck:grist_cost",
+        "grist_cost": gristCosts,
+        "ingredient": ingredient
+        };
 
-          const jsonDisplay = document.getElementById('jsonDisplay');
-          jsonDisplay.textContent = JSON.stringify(recipeJSON, null, 2);
+        const jsonDisplay = document.getElementById('jsonDisplay');
+        jsonDisplay.textContent = JSON.stringify(recipeJSON, null, 2);
 
-
-
-          const queryString = window.location.search;
-          const urlParams = new URLSearchParams(queryString);
-          if (urlParams.has('Datapack')) {
-            localStorage.setItem('recipeData', JSON.stringify(recipeJSON));
-            window.location.href = 'datapack.html';
-          }
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        if (urlParams.has('Datapack')) {
+          localStorage.setItem('recipeData', JSON.stringify(recipeJSON));
+          window.location.href = 'datapack.html';
+        }
       });
     </script>
   </body>
