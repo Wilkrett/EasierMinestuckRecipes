@@ -64,6 +64,10 @@ body {
     margin: 5px;
     cursor: pointer;
   }
+  .gallery-item[data-grist=dummy] {
+    margin-left: 185px;
+    margin-right: 185px;
+  }
   .selected {
     border: 2px solid #AA0000;
   }

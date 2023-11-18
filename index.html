@@ -60,6 +60,7 @@
             <img src="img/grist/sulfur.png" class="gallery-item" data-grist="sulfur">
             <img src="img/grist/uranium.png" class="gallery-item" data-grist="uranium">
             <img src="img/grist/zillium.png" class="gallery-item" data-grist="zillium">
+            <img src="img/grist/dummy.png" class="gallery-item" data-grist="dummy">
           </div>
         </div>
 
@@ -104,6 +105,14 @@
             <button type="button" class="btn btn-minestuck" onclick="this.parentNode.parentNode.remove()">Remove</button>
           </div>
         `;
+
+        if (grist === 'dummy') {
+          gristCard.children[1].innerHTML += `
+            <div class="form-group mt-1">
+              <input type="text" class="form-control" name="grist-type-${gristCount}" placeholder="grist type" required>
+            </div>`;
+          gristCard.children[1].classList.add('mb-0')
+        }
     
         gristCostSection.appendChild(gristCard);
     
@@ -122,10 +131,11 @@
           $('.grist-card').each(function(index) {
           const gristCostInput = parseInt($(this).find(`#grist-cost-${index}`).val());
           const selectedImage = $(this).find(`#image-${index}`).val();
-
-          console.log("Selected Image:", selectedImage);
-
-          gristCosts[`minestuck:${selectedImage}`] = gristCostInput;
+          if (selectedImage === 'dummy') {
+            gristCosts[$(this).find('input[type=text]').val()] = gristCostInput
+          } else {
+            gristCosts[`minestuck:${selectedImage}`] = gristCostInput;
+          }
           });
 
           const recipeJSON = {
