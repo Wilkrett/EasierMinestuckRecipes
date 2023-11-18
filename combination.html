@@ -54,8 +54,13 @@
 
             document.getElementById('jsonDisplay').innerText = JSON.stringify(recipeJSON, null, 2);
 
-            localStorage.setItem('combinationData', JSON.stringify(recipeJSON));
-            window.location.href = 'datapack.html';
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            if (urlParams.has('Datapack')) {
+                localStorage.setItem('combinationData', JSON.stringify(recipeJSON));
+                window.location.href = 'datapack.html';
+            }
+
         }
     </script>
 

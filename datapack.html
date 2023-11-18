@@ -74,8 +74,8 @@
             </tbody>
         </table>
         
-        <a href="gristcost.html"><button id="addGristCostButton" type="button" class="btn btn-link" >+ Add Grist Cost</button></a>
-        <a href="combination.html"><button id="addCombinationButton" type="button" class="btn btn-link">+ Add Combination</button></a>
+        <a href="gristcost.html?Datapack=Yes"><button id="addGristCostButton" type="button" class="btn btn-link" >+ Add Grist Cost</button></a>
+        <a href="combination.html?Datapack=Yes"><button id="addCombinationButton" type="button" class="btn btn-link">+ Add Combination</button></a>
         <button id="clearAllButton" type="button" class="btn btn-danger">Remove All Data</button>
         <button id="createZipButton">Finalize Datapack</button>
     </div>
@@ -135,7 +135,7 @@
                 var newCombination = {
                     path: '/data/example/recipes/combinations/' + recipeJSON["output"]["item"],
                     type: 'combination',
-                    somethingIDontLike: recipeJSON
+                    somethingIDontLike: storedCOMBI
                 };
 
                 tableData.push(newCombination);
@@ -168,7 +168,7 @@
             };
             var pathSegments = rowData["Path"].split('/');
             var filename = pathSegments.pop() + ".json"; // Extract the last segment as filename
-            var jsonData = row.cells[2].innerText; // Convert rowData to JSON string
+            var jsonData = rowData["SomethingIDontLike"]; // Convert rowData to JSON string
 
             var folder = zip; // Start with the root folder of the ZIP
 

@@ -155,9 +155,14 @@
           const jsonDisplay = document.getElementById('jsonDisplay');
           jsonDisplay.textContent = JSON.stringify(recipeJSON, null, 2);
 
-          // Store the recipeJSON object in localStorage
-          localStorage.setItem('recipeData', JSON.stringify(recipeJSON));
-          window.location.href = 'datapack.html';
+
+
+          const queryString = window.location.search;
+          const urlParams = new URLSearchParams(queryString);
+          if (urlParams.has('Datapack')) {
+            localStorage.setItem('recipeData', JSON.stringify(recipeJSON));
+            window.location.href = 'datapack.html';
+          }
       });
     </script>
   </body>
