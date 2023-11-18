@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Minestuck Gristcost Datapack Json Thing</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #1f1f1f;
+      color: #ffffff;
+      padding-top: 50px;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      width: 50%;
+      margin: 0 auto;
+      border-radius: 15px;
+      border: 2px solid #555;
+      padding: 20px;
+    }
+
+    label {
+      color: #55FF55;
+      font-weight: bold;
+    }
+
+    .form-control {
+      background-color: #2f2f2f;
+      color: #ffffff;
+      border-color: #555;
+    }
+
+    .form-control:focus {
+      background-color: #3f3f3f;
+      color: #ffffff;
+      border-color: #777;
+    }
+
+    .btn-minestuck {
+      background-color: #AA0000;
+      border-color: #AA0000;
+      color: #FFFFFF;
+      margin-top: 20px;
+    }
+
+    .btn-minestuck:hover {
+      background-color: #770000;
+      border-color: #770000;
+    }
+
+    .form-text {
+      color: #aaa;
+    }
+
+    .grist-card {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #333;
+      border-radius: 10px;
+    }
+
+    .grist-card label {
+      color: #55FF55;
+      font-weight: bold;
+    }
+
+    .gallery-item {
+      width: 100px;
+      height: 100px;
+      margin: 5px;
+      cursor: pointer;
+    }
+    .selected {
+      border: 2px solid #AA0000;
+    }
+
+    .grist-card {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .grist-card img {
+        margin-right: 10px;
+        margin-top: 10px;
+        margin-left: 10px;
+    }
+    .grist-count {
+      margin-left: auto;
+    }
+
+    #jsonDisplay {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 14px;
+        border: 1px solid #444;
+        padding: 10px;
+        margin-top: 20px;
+        white-space: pre-wrap;
+        background-color: #222;
+        color: #ddd;
+    }
+    
+  </style>
+</head>
+<body>
+    <div class="container">
+      <h2 class="mb-4">Minestuck Gristcost Datapack Json Thing</h2>
+      <form id="recipeForm">
+
+        <div class="form-group">
+          <label for="ingredient-tag">Ingredient Tag:</label>
+          <input type="text" class="form-control" id="ingredient-tag" name="ingredient-tag" placeholder='{"tag": "supplementaries:flags"}' required>
+          <small class="form-text">Example: {"item": "supplementaries:bomb_blue"}</small>
+        </div>
+  
+        <div id="gristCostSection">
+          
+        </div>
+  
+        <button type="button" class="btn btn-minestuck" id="addGristBtn">Add Grist</button>
+        <button type="submit" class="btn btn-minestuck">Generate Recipe</button>
+      </form>
+      <div id="jsonDisplay"></div>
+    </div>
+  
+    <!-- popup -->
+    <div class="modal" id="imageModal">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+  
+          <div class="modal-header">
+            <h4 class="modal-title">Select Grist</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+  
+          <div class="modal-body">
+            <div class="gallery">
+              <img src="img/grist/amber.png" class="gallery-item" data-image="amber.png">
+              <img src="img/grist/amethyst.png" class="gallery-item" data-image="amethyst.png">
+              <img src="img/grist/artifact.png" class="gallery-item" data-image="artifact.png">
+              <img src="img/grist/build.png" class="gallery-item" data-image="build.png">
+              <img src="img/grist/chalk.png" class="gallery-item" data-image="chalk.png">
+              <img src="img/grist/caulk.png" class="gallery-item" data-image="caulk.png">
+              <img src="img/grist/cobalt.png" class="gallery-item" data-image="cobalt.png">
+              <img src="img/grist/diamond.png" class="gallery-item" data-image="diamond.png">
+              <img src="img/grist/garnet.png" class="gallery-item" data-image="garnet.png">
+              <img src="img/grist/gold.png" class="gallery-item" data-image="gold.png">
+              <img src="img/grist/iodine.png" class="gallery-item" data-image="iodine.png">
+              <img src="img/grist/marble.png" class="gallery-item" data-image="marble.png">
+              <img src="img/grist/mercury.png" class="gallery-item" data-image="mercury.png">
+              <img src="img/grist/quartz.png" class="gallery-item" data-image="quartz.png">
+              <img src="img/grist/ruby.png" class="gallery-item" data-image="ruby.png">
+              <img src="img/grist/rust.png" class="gallery-item" data-image="rust.png">
+              <img src="img/grist/shale.png" class="gallery-item" data-image="shale.png">
+              <img src="img/grist/sulfur.png" class="gallery-item" data-image="sulfur.png">
+              <img src="img/grist/uranium.png" class="gallery-item" data-image="uranium.png">
+              <img src="img/grist/zillium.png" class="gallery-item" data-image="zillium.png">
+            </div>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+  
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  
+    <script>
+        document.getElementById('addGristBtn').addEventListener('click', function() {
+          $('#imageModal').modal('show');
+        });
+      
+        $(document).on('click', '.gallery-item', function() {
+          const selectedImage = $(this).data('image');
+          createGristCard(selectedImage);
+          $(this).addClass('selected').off('click');
+          $('#imageModal').modal('hide');
+        });
+      
+        function createGristCard(image) {
+          const gristCount = $('.grist-card').length + 1;
+      
+          const gristCostSection = document.getElementById('gristCostSection');
+      
+          const gristCard = document.createElement('div');
+          gristCard.classList.add('grist-card');
+      
+          gristCard.innerHTML = `
+            <div class="form-group">
+              <img src="img/grist/${image}" width="50" height="50">
+              <input type="hidden" id="image-${gristCount}" name="image-${gristCount}" value="${image}">
+            </div>
+            <div class="form-group">
+              <label for="grist-cost-${gristCount}">Grist Cost ${gristCount}:</label>
+              <input type="number" class="form-control" id="grist-cost-${gristCount}" name="grist-cost-${gristCount}" required>
+            </div>
+          `;
+      
+          gristCostSection.appendChild(gristCard);
+      
+        }
+      
+        document.getElementById('recipeForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const ingredientTag = JSON.parse(document.getElementById('ingredient-tag').value);
+
+            const gristCosts = {};
+
+            $('.grist-card').each(function(index) {
+            const gristCount = index + 1;
+            const gristCostInput = parseInt($(this).find(`#grist-cost-${gristCount}`).val());
+            const selectedImage = $(this).find(`#image-${gristCount}`).val();
+
+            console.log("Selected Image:", selectedImage);
+
+            if (selectedImage) {
+                const imageName = selectedImage.split('.')[0];
+                gristCosts[`minestuck:${imageName}`] = gristCostInput;
+            }
+            });
+
+            const recipeJSON = {
+            "type": "minestuck:grist_cost",
+            "grist_cost": gristCosts,
+            "ingredient": ingredientTag
+            };
+
+            const jsonDisplay = document.getElementById('jsonDisplay');
+            jsonDisplay.textContent = JSON.stringify(recipeJSON, null, 2);
+        });
+    </script>
+  </body>
+</html>
