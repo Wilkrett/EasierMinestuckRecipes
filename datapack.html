@@ -64,7 +64,7 @@
         <table id="dataTable" class="table table-bordered">
             <thead>
                 <tr>
-                    <th>FileName</th>
+                    <th>Path</th>
                     <th>Type</th>
                     <th>something i dont like</th>
                 </tr>
@@ -75,7 +75,7 @@
         </table>
         
         <a href="gristcost.html"><button id="addGristCostButton" type="button" class="btn btn-link" >+ Add Grist Cost</button></a>
-        <button id="addCombinationButton" type="button" class="btn btn-link">+ Add Combination</button>
+        <a href="combination.html"><button id="addCombinationButton" type="button" class="btn btn-link">+ Add Combination</button></a>
         <button id="clearAllButton" type="button" class="btn btn-danger">Remove All Data</button>
         <button id="createZipButton">Finalize Datapack</button>
     </div>
@@ -92,24 +92,12 @@
             tableData.forEach(function(row) {
                 var newRow = document.createElement('tr');
                 newRow.innerHTML = `
-                    <td>${row.fileName}</td>
                     <td>${row.path}</td>
+                    <td>${row.type}</td>
                     <td>${row.somethingIDontLike}</td>
                 `;
                 tableBody.appendChild(newRow);
             });
-        }
-
-        function addCombination() {
-            var newCombination = {
-                fileName: 'another_example_file',
-                path: '/another/example/path',
-                somethingIDontLike: 'More new data'
-            };
-
-            tableData.push(newCombination);
-            localStorage.setItem('tableData', JSON.stringify(tableData));
-            updateTable();
         }
 
         function clearAllData() {
@@ -124,11 +112,29 @@
         function retrieveJSONFromLocalStorage() {
             const storedJSON = localStorage.getItem('recipeData');
             localStorage.removeItem('recipeData');
+
             if (storedJSON) {
                 const recipeJSON = JSON.parse(storedJSON);
                 var newCombination = {
-                    fileName: 'another_example_file',
-                    path: '/data/example/recipes/grist_costs/' + recipeJSON["ingredient"]["item"] + '.json',
+                    path: '/data/example/recipes/grist_costs/' + recipeJSON["ingredient"]["item"],
+                    type: 'gristcost',
+                    somethingIDontLike: storedJSON
+                };
+
+                tableData.push(newCombination);
+                localStorage.setItem('tableData', JSON.stringify(tableData));
+
+                updateTable();
+            }
+
+            const storedCOMBI = localStorage.getItem('combinationData');
+            localStorage.removeItem('combinationData');
+            if (storedCOMBI) {
+                const recipeJSON = JSON.parse(storedCOMBI);
+                
+                var newCombination = {
+                    path: '/data/example/recipes/combinations/' + recipeJSON["output"]["item"],
+                    type: 'combination',
                     somethingIDontLike: recipeJSON
                 };
 
@@ -153,6 +159,18 @@
 
         zip.file("pack.mcmeta", JSON.stringify(packMeta, null, 2));
   
+        var tableRows = document.querySelectorAll('#dataTable tbody tr');
+        tableRows.forEach(function(row) {
+            var rowData = {
+                "Path": row.cells[0].innerText,
+                "Type": row.cells[1].innerText,
+                "SomethingIDontLike": row.cells[2].innerText
+            };
+            let filename = rowData["Path"] + ".json";
+            let jsonData = row.cells[2].innerText
+            zip.file(filename, jsonData);
+        });
+
         zip.generateAsync({ type: "blob" })
           .then(function(content) {
             var zipFile = document.createElement('a');
@@ -166,7 +184,6 @@
       }
 
         // Add event listeners to the buttons
-        document.getElementById("addCombinationButton").addEventListener("click", addCombination);
         document.getElementById("clearAllButton").addEventListener("click", clearAllData);
         document.getElementById("createZipButton").addEventListener("click", createZip);
 

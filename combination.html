@@ -53,6 +53,9 @@
             };
 
             document.getElementById('jsonDisplay').innerText = JSON.stringify(recipeJSON, null, 2);
+
+            localStorage.setItem('combinationData', JSON.stringify(recipeJSON));
+            window.location.href = 'datapack.html';
         }
     </script>
 
