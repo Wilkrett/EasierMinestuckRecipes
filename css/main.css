@@ -78,6 +78,10 @@ body {
       margin-top: 10px;
       margin-left: 10px;
   }
+  .grist-card button {
+    margin-top: 30px;
+    margin-left: 10px;
+  }
   .grist-count {
     margin-left: auto;
   }
