@@ -5,103 +5,7 @@
   <title>Minestuck Gristcost Datapack Json Thing</title>
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body {
-      background-color: #1f1f1f;
-      color: #ffffff;
-      padding-top: 50px;
-      font-family: Arial, sans-serif;
-    }
-
-    .container {
-      width: 50%;
-      margin: 0 auto;
-      border-radius: 15px;
-      border: 2px solid #555;
-      padding: 20px;
-    }
-
-    label {
-      color: #55FF55;
-      font-weight: bold;
-    }
-
-    .form-control {
-      background-color: #2f2f2f;
-      color: #ffffff;
-      border-color: #555;
-    }
-
-    .form-control:focus {
-      background-color: #3f3f3f;
-      color: #ffffff;
-      border-color: #777;
-    }
-
-    .btn-minestuck {
-      background-color: #AA0000;
-      border-color: #AA0000;
-      color: #FFFFFF;
-      margin-top: 20px;
-    }
-
-    .btn-minestuck:hover {
-      background-color: #770000;
-      border-color: #770000;
-    }
-
-    .form-text {
-      color: #aaa;
-    }
-
-    .grist-card {
-      margin-top: 20px;
-      padding: 10px;
-      background-color: #333;
-      border-radius: 10px;
-    }
-
-    .grist-card label {
-      color: #55FF55;
-      font-weight: bold;
-    }
-
-    .gallery-item {
-      width: 100px;
-      height: 100px;
-      margin: 5px;
-      cursor: pointer;
-    }
-    .selected {
-      border: 2px solid #AA0000;
-    }
-
-    .grist-card {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    .grist-card img {
-        margin-right: 10px;
-        margin-top: 10px;
-        margin-left: 10px;
-    }
-    .grist-count {
-      margin-left: auto;
-    }
-
-    #jsonDisplay {
-        font-family: 'Courier New', Courier, monospace;
-        font-size: 14px;
-        border: 1px solid #444;
-        padding: 10px;
-        margin-top: 20px;
-        white-space: pre-wrap;
-        background-color: #222;
-        color: #ddd;
-    }
-    
-  </style>
+  <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
   <div class="container">
@@ -110,7 +14,7 @@
 
       <div class="form-group">
         <label for="ingredient-tag">Ingredient Tag:</label>
-        <input type="text" class="form-control" id="ingredient-tag" name="ingredient-tag" placeholder='{"tag": "supplementaries:flags"}' required>
+        <input type="text" class="form-control" id="ingredient-tag" name="ingredient-tag" placeholder='{"item": "supplementaries:bomb_blue"}' required>
         <small class="form-text">Example: {"item": "supplementaries:bomb_blue"}</small>
       </div>
 
