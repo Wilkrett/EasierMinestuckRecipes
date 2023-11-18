@@ -40,26 +40,26 @@
 
         <div class="modal-body">
           <div class="gallery">
-            <img src="img/grist/amber.png" class="gallery-item" data-image="amber.png">
-            <img src="img/grist/amethyst.png" class="gallery-item" data-image="amethyst.png">
-            <img src="img/grist/artifact.png" class="gallery-item" data-image="artifact.png">
-            <img src="img/grist/build.png" class="gallery-item" data-image="build.png">
-            <img src="img/grist/chalk.png" class="gallery-item" data-image="chalk.png">
-            <img src="img/grist/caulk.png" class="gallery-item" data-image="caulk.png">
-            <img src="img/grist/cobalt.png" class="gallery-item" data-image="cobalt.png">
-            <img src="img/grist/diamond.png" class="gallery-item" data-image="diamond.png">
-            <img src="img/grist/garnet.png" class="gallery-item" data-image="garnet.png">
-            <img src="img/grist/gold.png" class="gallery-item" data-image="gold.png">
-            <img src="img/grist/iodine.png" class="gallery-item" data-image="iodine.png">
-            <img src="img/grist/marble.png" class="gallery-item" data-image="marble.png">
-            <img src="img/grist/mercury.png" class="gallery-item" data-image="mercury.png">
-            <img src="img/grist/quartz.png" class="gallery-item" data-image="quartz.png">
-            <img src="img/grist/ruby.png" class="gallery-item" data-image="ruby.png">
-            <img src="img/grist/rust.png" class="gallery-item" data-image="rust.png">
-            <img src="img/grist/shale.png" class="gallery-item" data-image="shale.png">
-            <img src="img/grist/sulfur.png" class="gallery-item" data-image="sulfur.png">
-            <img src="img/grist/uranium.png" class="gallery-item" data-image="uranium.png">
-            <img src="img/grist/zillium.png" class="gallery-item" data-image="zillium.png">
+            <img src="img/grist/amber.png" class="gallery-item" data-grist="amber">
+            <img src="img/grist/amethyst.png" class="gallery-item" data-grist="amethyst">
+            <img src="img/grist/artifact.png" class="gallery-item" data-grist="artifact">
+            <img src="img/grist/build.png" class="gallery-item" data-grist="build">
+            <img src="img/grist/chalk.png" class="gallery-item" data-grist="chalk">
+            <img src="img/grist/caulk.png" class="gallery-item" data-grist="caulk">
+            <img src="img/grist/cobalt.png" class="gallery-item" data-grist="cobalt">
+            <img src="img/grist/diamond.png" class="gallery-item" data-grist="diamond">
+            <img src="img/grist/garnet.png" class="gallery-item" data-grist="garnet">
+            <img src="img/grist/gold.png" class="gallery-item" data-grist="gold">
+            <img src="img/grist/iodine.png" class="gallery-item" data-grist="iodine">
+            <img src="img/grist/marble.png" class="gallery-item" data-grist="marble">
+            <img src="img/grist/mercury.png" class="gallery-item" data-grist="mercury">
+            <img src="img/grist/quartz.png" class="gallery-item" data-grist="quartz">
+            <img src="img/grist/ruby.png" class="gallery-item" data-grist="ruby">
+            <img src="img/grist/rust.png" class="gallery-item" data-grist="rust">
+            <img src="img/grist/shale.png" class="gallery-item" data-grist="shale">
+            <img src="img/grist/sulfur.png" class="gallery-item" data-grist="sulfur">
+            <img src="img/grist/uranium.png" class="gallery-item" data-grist="uranium">
+            <img src="img/grist/zillium.png" class="gallery-item" data-grist="zillium">
           </div>
         </div>
 
@@ -77,14 +77,14 @@
       });
     
       $(document).on('click', '.gallery-item', function() {
-        const selectedImage = $(this).data('image');
-        createGristCard(selectedImage);
+        const grist = $(this).data('grist');
+        createGristCard(grist);
         $(this).addClass('selected').off('click');
         $('#imageModal').modal('hide');
       });
     
-      function createGristCard(image) {
-        const gristCount = $('.grist-card').length + 1;
+      function createGristCard(grist) {
+        const gristCount = $('.grist-card').length;
     
         const gristCostSection = document.getElementById('gristCostSection');
     
@@ -93,11 +93,11 @@
     
         gristCard.innerHTML = `
           <div class="form-group">
-            <img src="img/grist/${image}" width="50" height="50">
-            <input type="hidden" id="image-${gristCount}" name="image-${gristCount}" value="${image}">
+            <img src="img/grist/${grist}.png" width="50" height="50">
+            <input type="hidden" id="image-${gristCount}" name="image-${gristCount}" value="${grist}">
           </div>
           <div class="form-group">
-            <label for="grist-cost-${gristCount}">Grist Cost ${gristCount}:</label>
+            <label for="grist-cost-${gristCount}">Grist Cost ${gristCount+1}:</label>
             <input type="number" class="form-control" id="grist-cost-${gristCount}" name="grist-cost-${gristCount}" required>
           </div>
           <div class="form-group ml-2" style="margin-top:12px">
@@ -120,16 +120,12 @@
           const gristCosts = {};
 
           $('.grist-card').each(function(index) {
-          const gristCount = index + 1;
-          const gristCostInput = parseInt($(this).find(`#grist-cost-${gristCount}`).val());
-          const selectedImage = $(this).find(`#image-${gristCount}`).val();
+          const gristCostInput = parseInt($(this).find(`#grist-cost-${index}`).val());
+          const selectedImage = $(this).find(`#image-${index}`).val();
 
           console.log("Selected Image:", selectedImage);
 
-          if (selectedImage) {
-              const imageName = selectedImage.split('.')[0];
-              gristCosts[`minestuck:${imageName}`] = gristCostInput;
-          }
+          gristCosts[`minestuck:${selectedImage}`] = gristCostInput;
           });
 
           const recipeJSON = {
