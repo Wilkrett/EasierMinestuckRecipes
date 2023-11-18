@@ -166,9 +166,18 @@
                 "Type": row.cells[1].innerText,
                 "SomethingIDontLike": row.cells[2].innerText
             };
-            let filename = rowData["Path"] + ".json";
-            let jsonData = row.cells[2].innerText
-            zip.file(filename, jsonData);
+            var pathSegments = rowData["Path"].split('/');
+            var filename = pathSegments.pop() + ".json"; // Extract the last segment as filename
+            var jsonData = row.cells[2].innerText; // Convert rowData to JSON string
+
+            var folder = zip; // Start with the root folder of the ZIP
+
+            // Create subfolders based on path segments
+            pathSegments.forEach(function(segment) {
+                folder = folder.folder(segment);
+            });
+
+            folder.file(filename, jsonData);
         });
 
         zip.generateAsync({ type: "blob" })
