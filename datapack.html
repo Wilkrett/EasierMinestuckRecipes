@@ -6,8 +6,120 @@
     <title>Datapack creation</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3/dist/jszip.min.js"></script>
+    <style>
+        .container {
+            margin-top: 50px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        td {
+            color: #f8f8f8;
+        }
+
+        /* Button style */
+        #createZipButton {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #createZipButton:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    
-</body>
+    <div class="container mt-5">
+        <h2 class="mb-4">Minestuck Datapack Thing</h2>
+
+        <!-- table goes here -->
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>FileName</th>
+                    <th>Path</th>
+                    <th>something i dont like</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                <!-- <tr>
+                    <td>Data 1</td>
+                    <td>Data 2</td>
+                    <td>Data 3</td>
+                </tr>
+                <tr>
+                    <td>Data 4</td>
+                    <td>Data 5</td>
+                    <td>Data 6</td>
+                </tr> -->
+            </tbody>
+        </table>
+        
+        <a href="gristcost.html"><button type="button" class="btn btn-link" href="gristcost.html">+ Add Grist Cost</button></a>
+        <a href="combination.html"><button type="button" class="btn btn-link" href="gristcost.html">+ Add Combination</button></a>
+        <button id="createZipButton">Finalize Datapack</button>
+    </div>
+
+
+    <script>
+      document.getElementById("createZipButton").addEventListener("click", function() {
+        createZip();
+      });
+  
+      function createZip() {
+        var zip = new JSZip();
+
+        zip.file("credits.txt", "wilkret was here");
+
+        var packMeta = {
+            "pack": {
+            "pack_format": 10,
+            "description": "Minestuck Datapack Thing"
+            }
+        };
+
+        zip.file("pack.mcmeta", JSON.stringify(packMeta, null, 2));
+  
+        zip.generateAsync({ type: "blob" })
+          .then(function(content) {
+            var zipFile = document.createElement('a');
+            zipFile.href = URL.createObjectURL(content);
+            zipFile.download = "sample.zip";
+            zipFile.click();
+          })
+          .catch(function(error) {
+            console.error('Error creating ZIP file:', error);
+          });
+      }
+    </script>
+  </body>
 </html>
