@@ -61,39 +61,83 @@
         <h2 class="mb-4">Minestuck Datapack Thing</h2>
 
         <!-- table goes here -->
-        <table class="table table-bordered">
+        <table id="dataTable" class="table table-bordered">
             <thead>
                 <tr>
                     <th>FileName</th>
-                    <th>Path</th>
+                    <th>Type</th>
                     <th>something i dont like</th>
                 </tr>
             </thead>
             <tbody>
-                
-                <!-- <tr>
-                    <td>Data 1</td>
-                    <td>Data 2</td>
-                    <td>Data 3</td>
-                </tr>
-                <tr>
-                    <td>Data 4</td>
-                    <td>Data 5</td>
-                    <td>Data 6</td>
-                </tr> -->
+                <!-- stuff dynamically gets added here -->
             </tbody>
         </table>
         
-        <a href="gristcost.html"><button type="button" class="btn btn-link" href="gristcost.html">+ Add Grist Cost</button></a>
-        <a href="combination.html"><button type="button" class="btn btn-link" href="gristcost.html">+ Add Combination</button></a>
+        <a href="gristcost.html"><button id="addGristCostButton" type="button" class="btn btn-link" >+ Add Grist Cost</button></a>
+        <button id="addCombinationButton" type="button" class="btn btn-link">+ Add Combination</button>
+        <button id="clearAllButton" type="button" class="btn btn-danger">Remove All Data</button>
         <button id="createZipButton">Finalize Datapack</button>
     </div>
 
 
     <script>
-      document.getElementById("createZipButton").addEventListener("click", function() {
-        createZip();
-      });
+        var tableData = JSON.parse(localStorage.getItem('tableData')) || [];
+
+        function updateTable() {
+
+            var tableBody = document.querySelector('#dataTable tbody');
+            tableBody.innerHTML = '';
+
+            tableData.forEach(function(row) {
+                var newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td>${row.fileName}</td>
+                    <td>${row.path}</td>
+                    <td>${row.somethingIDontLike}</td>
+                `;
+                tableBody.appendChild(newRow);
+            });
+        }
+
+        function addCombination() {
+            var newCombination = {
+                fileName: 'another_example_file',
+                path: '/another/example/path',
+                somethingIDontLike: 'More new data'
+            };
+
+            tableData.push(newCombination);
+            localStorage.setItem('tableData', JSON.stringify(tableData));
+            updateTable();
+        }
+
+        function clearAllData() {
+            localStorage.removeItem('tableData');
+            tableData = [];
+            updateTable();
+        }
+        document.getElementById("createZipButton").addEventListener("click", function() {
+            createZip();
+        });
+
+        function retrieveJSONFromLocalStorage() {
+            const storedJSON = localStorage.getItem('recipeData');
+            localStorage.removeItem('recipeData');
+            if (storedJSON) {
+                const recipeJSON = JSON.parse(storedJSON);
+                var newCombination = {
+                    fileName: 'another_example_file',
+                    path: '/data/example/recipes/grist_costs/' + recipeJSON["ingredient"]["item"] + '.json',
+                    somethingIDontLike: recipeJSON
+                };
+
+                tableData.push(newCombination);
+                localStorage.setItem('tableData', JSON.stringify(tableData));
+
+                updateTable();
+            }
+        }
   
       function createZip() {
         var zip = new JSZip();
@@ -120,6 +164,15 @@
             console.error('Error creating ZIP file:', error);
           });
       }
+
+        // Add event listeners to the buttons
+        document.getElementById("addCombinationButton").addEventListener("click", addCombination);
+        document.getElementById("clearAllButton").addEventListener("click", clearAllData);
+        document.getElementById("createZipButton").addEventListener("click", createZip);
+
+        // Initialize the table on page load
+        retrieveJSONFromLocalStorage();
+        updateTable();
     </script>
   </body>
 </html>
