@@ -114,7 +114,7 @@
 
           const rawIngredient = document.getElementById('ingredient-tag').value;
           const ingredientTag = rawIngredient.startsWith("#")?
-            {tag: `${rawIngredient.substring(1)}`}:
+            {tag: rawIngredient.substring(1)}:
             {item: rawIngredient};
 
           const gristCosts = {};
