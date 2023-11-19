@@ -143,52 +143,52 @@
             }
         }
   
-      function createZip() {
-        var zip = new JSZip();
+        function createZip() {
+            var zip = new JSZip();
 
-        zip.file("credits.txt", "wilkret was here");
+            zip.file("credits.txt", "wilkret was here");
 
-        var packMeta = {
-            "pack": {
-            "pack_format": 10,
-            "description": "Minestuck Datapack Thing"
-            }
-        };
-
-        zip.file("pack.mcmeta", JSON.stringify(packMeta, null, 2));
-  
-        var tableRows = document.querySelectorAll('#dataTable tbody tr');
-        tableRows.forEach(function(row) {
-            var rowData = {
-                "Path": row.cells[0].innerText,
-                "Type": row.cells[1].innerText,
-                "SomethingIDontLike": row.cells[2].innerText
+            var packMeta = {
+                "pack": {
+                "pack_format": 10,
+                "description": "Minestuck Datapack Thing"
+                }
             };
-            var pathSegments = rowData["Path"].split('/');
-            var filename = pathSegments.pop() + ".json"; // Extract the last segment as filename
-            var jsonData = rowData["SomethingIDontLike"]; // Convert rowData to JSON string
 
-            var folder = zip; // Start with the root folder of the ZIP
+            zip.file("pack.mcmeta", JSON.stringify(packMeta, null, 2));
+    
+            var tableRows = document.querySelectorAll('#dataTable tbody tr');
+            tableRows.forEach(function(row) {
+                var rowData = {
+                    "Path": row.cells[0].innerText,
+                    "Type": row.cells[1].innerText,
+                    "SomethingIDontLike": row.cells[2].innerText
+                };
+                var pathSegments = rowData["Path"].split('/');
+                var filename = pathSegments.pop() + ".json"; // Extract the last segment as filename
+                var jsonData = rowData["SomethingIDontLike"]; // Convert rowData to JSON string
 
-            // Create subfolders based on path segments
-            pathSegments.forEach(function(segment) {
-                folder = folder.folder(segment);
+                var folder = zip; // Start with the root folder of the ZIP
+
+                // Create subfolders based on path segments
+                pathSegments.forEach(function(segment) {
+                    folder = folder.folder(segment);
+                });
+
+                folder.file(filename, jsonData);
             });
 
-            folder.file(filename, jsonData);
-        });
-
-        zip.generateAsync({ type: "blob" })
-          .then(function(content) {
-            var zipFile = document.createElement('a');
-            zipFile.href = URL.createObjectURL(content);
-            zipFile.download = "sample.zip";
-            zipFile.click();
-          })
-          .catch(function(error) {
-            console.error('Error creating ZIP file:', error);
-          });
-      }
+            zip.generateAsync({ type: "blob" })
+            .then(function(content) {
+                var zipFile = document.createElement('a');
+                zipFile.href = URL.createObjectURL(content);
+                zipFile.download = "sample.zip";
+                zipFile.click();
+            })
+            .catch(function(error) {
+                console.error('Error creating ZIP file:', error);
+            });
+        }
 
         // Add event listeners to the buttons
         document.getElementById("clearAllButton").addEventListener("click", clearAllData);
